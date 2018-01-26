@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// The items will be added as a sibling of the selected node unless the selected node is the project root.
         /// </summary>
         /// <returns>the dialog result, the newly updated selected node and the added nodes</returns>
-        public static Task<(int dialogResult, (IProjectTree selectedNode, ReadOnlyCollection<IProjectTree> addedNodes)?)> ShowAddExistingItemAsSiblingDialogAsync(
+        public static Task<(int dialogResult, (IProjectTree selectedNode, ReadOnlyCollection<IProjectTree> addedNodes)?)> ShowAddExistingSiblingItemDialogAsync(
             IPhysicalProjectTree projectTree,
             IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,

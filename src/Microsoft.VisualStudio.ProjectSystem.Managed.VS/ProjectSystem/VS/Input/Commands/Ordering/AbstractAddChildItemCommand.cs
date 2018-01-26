@@ -31,8 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override bool CanAdd(IPhysicalProjectTree projectTree, IProjectTree node)
         {
-            return projectTree.NodeCanHaveAdditions(node) &&
-                (OrderingHelper.IsValidDisplayOrderForProjectTree(node) || node.Flags.HasFlag(ProjectTreeFlags.Common.ProjectRoot));
+            return projectTree.NodeCanHaveAdditions(node);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [ProjectCommand(CommandGroup.VisualStudioStandard97, (long)VSConstants.VSStd97CmdID.AddNewItem)]
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
-    [Order(2000)]
+    [Order(int.MaxValue)]
     internal class AddNewItemOrderCommand : AbstractAddChildItemCommand
     {
         [ImportingConstructor]

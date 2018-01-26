@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         protected override Task<(int dialogResult, (IProjectTree selectedNode, ReadOnlyCollection<IProjectTree> addedNodes)?)>
             ShowAddItemDialogAsync(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider, IProjectTree node, string browseLocations)
         {
-            return AddItemHelper.ShowAddExistingItemAsSiblingDialogAsync(projectTree, projectVsServices, serviceProvider, node, browseLocations);
+            return AddItemHelper.ShowAddExistingSiblingItemDialogAsync(projectTree, projectVsServices, serviceProvider, node, browseLocations);
         }
     }
 }

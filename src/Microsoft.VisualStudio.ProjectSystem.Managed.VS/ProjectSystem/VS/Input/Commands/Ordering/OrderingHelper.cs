@@ -10,6 +10,9 @@ using Microsoft.Build.Evaluation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
+    /// <summary>
+    /// Helper methods to interact with a project tree that have items with a valid display order.
+    /// </summary>
     internal static class OrderingHelper
     {
         /// <summary>
