@@ -4,7 +4,7 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class OrderingHelperTests

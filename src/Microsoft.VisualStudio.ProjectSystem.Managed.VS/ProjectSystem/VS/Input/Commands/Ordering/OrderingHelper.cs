@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
-        public static bool IsValidDisplayOrderForProjectTree(IProjectTree projectTree)
+        public static bool HasValidDisplayOrder(IProjectTree projectTree)
         {
             return IsValidDisplayOrder(GetDisplayOrder(projectTree));
         }
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static ReadOnlyCollection<IProjectTree> GetChildren(IProjectTree projectTree)
         {
-            return projectTree.Children.Where(x => IsValidDisplayOrderForProjectTree(x)).OrderBy(x => GetDisplayOrder(x)).ToList().AsReadOnly();
+            return projectTree.Children.Where(x => HasValidDisplayOrder(x)).OrderBy(x => GetDisplayOrder(x)).ToList().AsReadOnly();
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static bool TryMove(Project project, IProjectTree projectTree, IProjectTree referenceProjectTree, MoveAction moveAction)
         {
-            if (!IsValidDisplayOrderForProjectTree(projectTree) || !IsValidDisplayOrderForProjectTree(referenceProjectTree))
+            if (!HasValidDisplayOrder(projectTree) || !HasValidDisplayOrder(referenceProjectTree))
             {
                 return false;
             }

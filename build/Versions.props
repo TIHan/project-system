@@ -62,7 +62,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
     
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.128-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.169-pre-gd4ebce9482</MicrosoftVisualStudioProjectSystemSDKVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
@@ -98,6 +98,7 @@
       https://dotnet.myget.org/F/roslyn-analyzers/api/v3/index.json;
       https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json;
       https://dotnet.myget.org/F/templating/api/v3/index.json;
+      C:\VSIDEProj.CPS\bin\Debug;
     </RestoreSources>
   </PropertyGroup>
 </Project>
