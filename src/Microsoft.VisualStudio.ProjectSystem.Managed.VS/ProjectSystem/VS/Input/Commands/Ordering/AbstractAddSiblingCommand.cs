@@ -11,27 +11,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     {
         private readonly IPhysicalProjectTree _projectTree;
         private readonly ConfiguredProject _configuredProject;
+        private readonly IProjectTreeVsOperations _operations;
 
-        public AbstractAddSiblingCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject)
+        public AbstractAddSiblingCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject, IProjectTreeVsOperations operations)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(operations, nameof(operations));
 
             _projectTree = projectTree;
             _configuredProject = configuredProject;
+            _operations = operations;
         }
 
-        protected abstract Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree targetParent);
+        protected abstract Task AddNode(IProjectTreeVsOperations operations, IProjectTree targetParent);
 
         protected abstract Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree target);
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
-            Assumes.NotNull(treeService);
-
             var result = CommandStatusResult.Unhandled;
-            if (node.Parent != null && OrderingHelper.HasValidDisplayOrder(node) && treeService.CanAddItem(node.Parent))
+            if (node.Parent != null && OrderingHelper.HasValidDisplayOrder(node) && _operations.CanAddItem(node.Parent))
             {
                 progressiveStatus |= CommandStatus.Supported | CommandStatus.Enabled;
                 result = new CommandStatusResult(true, commandText, progressiveStatus);
@@ -46,13 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
-            Assumes.NotNull(treeService);
-
             if (node.Parent != null)
             {
                 await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
-                await AddNode(treeService, node.Parent).ConfigureAwait(true);
+                await AddNode(_operations, node.Parent).ConfigureAwait(true);
                 await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
 
                 var updatedParent = _projectTree.CurrentTree.Find(node.Parent.Identity);

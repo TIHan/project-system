@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddExistingItemAboveCommand : AbstractAddSiblingCommand
     {
         [ImportingConstructor]
-        public AddExistingItemAboveCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject) : base(projectTree, configuredProject)
+        public AddExistingItemAboveCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject, IProjectTreeVsOperations operations) : base(projectTree, configuredProject, operations)
         {
         }
 
-        protected override Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree targetParent)
+        protected override Task AddNode(IProjectTreeVsOperations operations, IProjectTree targetParent)
         {
-            return treeService.ShowAddExistingFilesDialogAsync(targetParent);
+            return operations.ShowAddExistingFilesDialogAsync(targetParent);
         }
 
         protected override async Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree target)

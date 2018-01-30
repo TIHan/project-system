@@ -11,27 +11,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     {
         private readonly IPhysicalProjectTree _projectTree;
         private readonly ConfiguredProject _configuredProject;
+        private readonly IProjectTreeVsOperations _operations;
 
-        public AbstractAddChildCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject)
+        public AbstractAddChildCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject, IProjectTreeVsOperations operations)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(operations, nameof(operations));
 
             _projectTree = projectTree;
             _configuredProject = configuredProject;
+            _operations = operations;
         }
 
-        protected abstract Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree target);
+        protected abstract Task AddNode(IProjectTreeVsOperations operations, IProjectTree target);
 
         protected abstract Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree targetChild);
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
-            Assumes.NotNull(treeService);
-
             var result = CommandStatusResult.Unhandled;
-            if (treeService.CanAddItem(node))
+            if (_operations.CanAddItem(node))
             {
                 progressiveStatus |= CommandStatus.Supported | CommandStatus.Enabled;
                 result = new CommandStatusResult(true, commandText, progressiveStatus);
@@ -46,11 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
-            Assumes.NotNull(treeService);
-
             await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
-            await AddNode(treeService, node).ConfigureAwait(true);
+            await AddNode(_operations, node).ConfigureAwait(true);
             await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
 
             var targetChild = OrderingHelper.GetLastChild(node);

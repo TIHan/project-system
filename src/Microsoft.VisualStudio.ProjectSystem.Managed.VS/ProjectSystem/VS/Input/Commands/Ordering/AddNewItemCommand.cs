@@ -13,13 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddNewItemCommand : AbstractAddChildCommand
     {
         [ImportingConstructor]
-        public AddNewItemCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject) : base(projectTree, configuredProject)
+        public AddNewItemCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject, IProjectTreeVsOperations operations) : base(projectTree, configuredProject, operations)
         {
         }
 
-        protected override Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree target)
+        protected override Task AddNode(IProjectTreeVsOperations operations, IProjectTree target)
         {
-            return treeService.ShowAddNewFileDialogAsync(target);
+            return operations.ShowAddNewFileDialogAsync(target);
         }
 
         protected override async Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree targetChild)

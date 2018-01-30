@@ -13,13 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class PasteCommand : AbstractAddChildCommand
     {
         [ImportingConstructor]
-        public PasteCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject) : base(projectTree, configuredProject)
+        public PasteCommand(IPhysicalProjectTree projectTree, ConfiguredProject configuredProject, IProjectTreeVsOperations operations) : base(projectTree, configuredProject, operations)
         {
         }
 
-        protected override Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree target)
+        protected override Task AddNode(IProjectTreeVsOperations operations, IProjectTree target)
         {
-            return treeService.PasteFromClipboardAsync(target);
+            return operations.PasteFromClipboardAsync(target);
         }
 
         protected override async Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree targetChild)
