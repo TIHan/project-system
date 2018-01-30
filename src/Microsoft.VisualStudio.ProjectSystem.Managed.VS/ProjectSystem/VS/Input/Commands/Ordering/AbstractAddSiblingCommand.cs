@@ -21,17 +21,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             _configuredProject = configuredProject;
         }
 
-        protected abstract Task AddNode(IProjectTreeService2 treeService, IProjectTree targetParent);
+        protected abstract Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree targetParent);
 
         protected abstract Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree target);
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeService2;
+            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
             Assumes.NotNull(treeService);
 
             var result = CommandStatusResult.Unhandled;
-            if (node.Parent != null && OrderingHelper.HasValidDisplayOrder(node) && treeService.CanAddItemOrFolder(node.Parent))
+            if (node.Parent != null && OrderingHelper.HasValidDisplayOrder(node) && treeService.CanAddItem(node.Parent))
             {
                 progressiveStatus |= CommandStatus.Supported | CommandStatus.Enabled;
                 result = new CommandStatusResult(true, commandText, progressiveStatus);
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            var treeService = _projectTree.TreeService as IProjectTreeService2;
+            var treeService = _projectTree.TreeService as IProjectTreeServiceVsOperations;
             Assumes.NotNull(treeService);
 
             if (node.Parent != null)

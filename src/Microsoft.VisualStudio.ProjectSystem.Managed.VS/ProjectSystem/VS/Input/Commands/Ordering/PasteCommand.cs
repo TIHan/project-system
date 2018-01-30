@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
         }
 
-        protected override Task AddNode(IProjectTreeService2 treeService, IProjectTree target)
+        protected override Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree target)
         {
             return treeService.PasteFromClipboardAsync(target);
         }

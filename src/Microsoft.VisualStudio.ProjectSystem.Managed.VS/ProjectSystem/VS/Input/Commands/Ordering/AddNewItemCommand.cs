@@ -17,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
         }
 
-        protected override Task AddNode(IProjectTreeService2 treeService, IProjectTree target)
+        protected override Task AddNode(IProjectTreeServiceVsOperations treeService, IProjectTree target)
         {
-            return treeService.AddNewItemAsync(target);
+            return treeService.ShowAddNewFileDialogAsync(target);
         }
 
         protected override async Task OnAddedNode(ConfiguredProject configuredProject, IProjectTree addedNode, IProjectTree targetChild)
